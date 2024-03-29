@@ -1,0 +1,36 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+    </plugin-info>
+
+    <resource key="img" name="img/" type="download" location="img" />
+
+    <xhtml-macro name="demobug"
+                 key="demobugmacro"
+                 class="com.requirementyogi.demo.scaffoldingbug.DemoBugMacro"
+                 documentation-url="https://docs.requirementyogi.com/data-center/"
+                 icon="/download/resources/${project.groupId}.${project.artifactId}/img/icon.png"
+                 >
+        <category name="communication" />
+        <device-type>mobile</device-type>
+        <parameters>
+
+        </parameters>
+    </xhtml-macro>
+
+    <component-import key="s1" interface="com.atlassian.confluence.xhtml.api.XhtmlContent" />
+    <component-import key="s2" interface="com.atlassian.confluence.pages.PageManager" />
+
+    <rest key="rest" path="/demobug" version="1" name="REST resources">
+        <package>com.requirementyogi.demo.scaffoldingbug.rest</package>
+    </rest>
+
+    <web-item key="top-bar-link" name="Top bar link" section="system.header/left" weight="1000">
+        <label>CLICK HERE TO SHOW THE BUG</label>
+        <link linkId="">/rest/demobug/1/render?pageId=$!{helper.page.id}</link>
+        <tooltip>First go to a page with a "Text Data" macro, then click on this link</tooltip>
+    </web-item>
+
+</atlassian-plugin>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-v4_0_0.xsd">
+    <groupId>com.requirementyogi</groupId>
+    <artifactId>demo-scaffolding-bug</artifactId>
+    <version>1-SNAPSHOT</version>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <organization>
+        <name>Requirement Yogi</name>
+        <url>https://www.requirementyogi.com/</url>
+    </organization>
+
+    <name>Demo Scaffolding bug</name>
+    <packaging>atlassian-plugin</packaging>
+    <description>
+        Please put the macro named "Demo bug" on a page and follow the instructions.
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.atlassian.confluence</groupId>
+            <artifactId>confluence</artifactId>
+            <version>${confluence.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.atlassian.confluence.plugins</groupId>
+                    <artifactId>confluence-create-content-plugin</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-text</groupId>
+                    <artifactId>commons-text</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-text</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.code.gson</groupId>
+                    <artifactId>gson</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-library</artifactId>
+                </exclusion>
+                <exclusion>
+                    <!-- So that the vulnerability build doesn't yell at us -->
+                    <groupId>com.sun</groupId>
+                    <artifactId>tools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.atlassian.fugue</groupId>
+                    <artifactId>fugue</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.atlassian.fugue</groupId>
+                    <artifactId>fugue</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+                <exclusion>
+                    <!-- So that the vulnerability build doesn't yell at us -->
+                    <groupId>com.sun</groupId>
+                    <artifactId>tools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>jsr305</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.plugins.rest</groupId>
+            <artifactId>atlassian-rest-common</artifactId>
+            <version>7.2.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.14.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.atlassian.maven.plugins</groupId>
+                <artifactId>amps-maven-plugin</artifactId>
+                <version>${amps.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <enableQuickReload>true</enableQuickReload>
+                    <instanceId>confluence</instanceId>
+                    <installPlugin>false</installPlugin>
+                    <httpPort>1990</httpPort>
+                    <contextPath>/confluence</contextPath>
+                    <startupTimeout>1000000</startupTimeout>
+                    <jvmArgs>-Xmx2000m</jvmArgs>
+                    <jvmDebugPort>5015</jvmDebugPort>
+                    <products>
+                        <product>
+                            <id>confluence</id>
+                            <instanceId>confluence</instanceId>
+                            <version>${confluence.version}</version>
+                            <!--<dataVersion>${confluence.data.version}</dataVersion>-->
+                            <containerId>tomcat9x</containerId>
+                        </product>
+                    </products>
+                    <pluginArtifacts>
+                        <pluginArtifact>
+                            <groupId>com.atlassian.labs.plugins</groupId>
+                            <artifactId>quickreload</artifactId>
+                            <version>1.30.5</version>
+                        </pluginArtifact>
+                    </pluginArtifacts>
+                    <skipBanningDependencies>true</skipBanningDependencies>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.12.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <rules>
+                        <requireMavenVersion>
+                            <!-- It's for AMPS, it fails under that -->
+                            <version>3.8.4</version>
+                        </requireMavenVersion>
+                        <requireJavaVersion>
+                            <!-- Must use Java 11 to run Confluence properly -->
+                            <version>[11, 18)</version>
+                        </requireJavaVersion>
+
+                    </rules>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>enforce-java</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <properties>
+        <playsql.profiling>true</playsql.profiling>
+        <webpack.profile>webpack-prod-pr</webpack.profile>
+        <confluence.version>8.5.4</confluence.version>
+        <java.version>11</java.version>
+        <amps.version>8.13.1</amps.version>
+    </properties>
+</project>
